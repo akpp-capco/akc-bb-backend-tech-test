@@ -1,11 +1,9 @@
 package com.capco.akc.backbasetest.controller;
 
 import com.capco.akc.backbasetest.model.TransactionTotal;
-import com.capco.akc.backbasetest.model.Transactions;
+import com.capco.akc.backbasetest.model.Transaction;
 import com.capco.akc.backbasetest.service.TransactionsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,23 +13,27 @@ import java.util.List;
 @RequestMapping("transactions")
 public class TransactionsController implements TransactionsOperations {
 
+    private final TransactionsService transactionsService;
+
     @Autowired
     public TransactionsController(TransactionsService transactionsService) {
-
+        this.transactionsService = transactionsService;
     }
 
     @Override
-    public ResponseEntity<List<Transactions>> getTransactions() {
-        return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
+    public List<Transaction> getTransactions() {
+        return transactionsService.getTransactions();
     }
 
     @Override
-    public ResponseEntity<List<Transactions>> getTransactionsByType(String transactionType) {
-        return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
+    public List<Transaction> getTransactionsByType(String transactionType) {
+        return transactionsService.getTransactionsByType(transactionType);
     }
 
     @Override
-    public ResponseEntity<TransactionTotal> getTotalByTransactionType(String transactionType) {
-        return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
+    public TransactionTotal getTotalByTransactionType(String transactionType) {
+        return new TransactionTotal()
+                .setType(transactionType)
+                .setTotal(transactionsService.getTotalByTransactionType(transactionType));
     }
 }
