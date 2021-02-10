@@ -10,7 +10,6 @@ This is a Maven project. It can be built with:
 ```shell script
 mvn clean install
 ```
-
 This will result in a WAR file that can be deployed to a server (i.e. Tomcat).
 
 #### Run
@@ -29,7 +28,7 @@ You may login with:
 - **Password:** P4ssw0rd
 
 #### Transactions
-Three API endpoints are available:
+Three RESTful API endpoints are available:
 - Transactions list
   - GET `/transactions`
 - Transaction filter based on transaction type
@@ -38,6 +37,11 @@ Three API endpoints are available:
   - GET `/transactions/filter/{transactionType}/total`
 
 All three are secured and can only be accessed by authenticated users (see Security). Anonymous users will be redirected to login.
+
+It seems there is only one resource publicly available from the OpenBank API to test. 
+The parameters for that resource have been hardcoded into this application. 
+Therefore, the `/transaction` endpoint will always return this one resource, regardless of who is logged in.
+Ideally, this would be parametrized based on the user's identity and further request parameters (i.e. for the account id).
 
 **Example URL:** [http://localhost:8080/akc-bb-backend-tech-test/transactions]
 

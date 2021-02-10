@@ -67,7 +67,7 @@ public class OpenBankTransactionsService implements TransactionsService {
         Map<String, String> uriParams = new HashMap<>();
         // URI parameters are hardcoded here because this is the only publicly available OpenBank endpoint/data that I am aware of, and should be enough for proof of concept.
         // Regardless of who is logged in to this app, the same transaction info will be retrieved.
-        // Ideally, this would be parametrized based on the user's identity and further request parameters (i.e. for the account Id).
+        // Ideally, this would be parametrized based on the user's identity and further request parameters (i.e. for the account id).
         uriParams.put(BANK_ID_PARAM, "rbs");
         uriParams.put(ACCOUNT_ID_PARAM, "savings-kids-john");
         uriParams.put(VIEW_ID_PARAM, "public");
