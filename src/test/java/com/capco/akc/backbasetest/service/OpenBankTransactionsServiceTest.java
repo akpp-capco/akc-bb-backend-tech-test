@@ -1,8 +1,9 @@
 package com.capco.akc.backbasetest.service;
 
-import com.capco.akc.backbasetest.config.OpenBankConfigProperties;
+import com.capco.akc.backbasetest.config.openbank.OpenBankConfigProperties;
 import com.capco.akc.backbasetest.model.Transaction;
 import com.capco.akc.backbasetest.model.openbank.OpenBankTransactionList;
+import com.capco.akc.backbasetest.service.openbank.OpenBankTransactionsService;
 import com.capco.akc.backbasetest.util.JsonUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeAll;
@@ -17,10 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -31,6 +29,8 @@ public class OpenBankTransactionsServiceTest {
     private static final String BANK_ID_PARAM = "bankId";
     private static final String ACCOUNT_ID_PARAM = "accountId";
     private static final String VIEW_ID_PARAM = "viewId";
+    private static final String TEST_TRANSACTION_TYPE = "SEPA";
+    private static final double EXPECTED_TOTAL = 8.6 + 8.6 + 8.6;
 
     @Mock
     private RestTemplate restTemplate;
@@ -67,6 +67,8 @@ public class OpenBankTransactionsServiceTest {
         String responseFile = "src/test/resources/saving-kids-john-transactions.json";
         OpenBankTransactionList openBankTransactionList = new ObjectMapper()
                 .readValue(JsonUtils.readFileAsString(responseFile), OpenBankTransactionList.class);
+
+        // Mock restTemplate call with saved JSON file
         Mockito.when(restTemplate.getForEntity(transactionsUrl, OpenBankTransactionList.class, uriParams))
                 .thenReturn(new ResponseEntity<>(openBankTransactionList, HttpStatus.OK));
     }
@@ -83,17 +85,25 @@ public class OpenBankTransactionsServiceTest {
 
     @Test
     public void getTransactionsByType() throws Exception {
+        // Reusing all transactions response since they are all the same type
         String expectedFile = "src/test/resources/expected-transactions.json";
         List<Transaction> expectedTransactions = Arrays.asList(new ObjectMapper()
                 .readValue(JsonUtils.readFileAsString(expectedFile), Transaction[].class));
-        List<Transaction> actualTransactions = openBankTransactionsService.getTransactionsByType("SEPA");
+        List<Transaction> actualTransactions = openBankTransactionsService.getTransactionsByType(TEST_TRANSACTION_TYPE);
         assertEquals(expectedTransactions, actualTransactions);
+    }
+
+    //Expect empty list
+    @Test
+    public void getTransactionsByType_negativeTest() {
+        List<Transaction> expectedEmptyList = new ArrayList<>();
+        List<Transaction> actualTransactions = openBankTransactionsService.getTransactionsByType("ANOTHERTYPE");
+        assertEquals(expectedEmptyList, actualTransactions);
     }
 
     @Test
     public void getTotalByTransactionType() {
-        Double actualTotal = openBankTransactionsService.getTotalByTransactionType("SEPA");
-        assertEquals(8.6 + 8.6 + 8.6, actualTotal);
-
+        Double actualTotal = openBankTransactionsService.getTotalByTransactionType(TEST_TRANSACTION_TYPE);
+        assertEquals(EXPECTED_TOTAL, actualTotal);
     }
 }

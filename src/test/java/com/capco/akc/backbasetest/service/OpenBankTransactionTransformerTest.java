@@ -2,6 +2,7 @@ package com.capco.akc.backbasetest.service;
 
 import com.capco.akc.backbasetest.model.Transaction;
 import com.capco.akc.backbasetest.model.openbank.OpenBankTransaction;
+import com.capco.akc.backbasetest.service.openbank.OpenBankTransactionTransformer;
 import com.capco.akc.backbasetest.util.JsonUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,7 +26,7 @@ public class OpenBankTransactionTransformerTest {
                 .setAccountId("savings-kids-john")
                 .setCounterpartyAccount("savings-kids-john")
                 .setCounterpartyName("ALIAS_03C57D")
-                .setCounterPartyLogoPath("http://example.com")
+                .setCounterPartyLogoPath("http://example.com") // modified from the API sandbox to ensure value is being populated
                 .setInstructedAmount(8.60)
                 .setInstructedCurrency("GBP")
                 .setTransactionAmount(8.60)
@@ -36,6 +37,7 @@ public class OpenBankTransactionTransformerTest {
 
     @Test
     public void apply() throws Exception {
+        // Read JSON from string with ObjectMapper to ensure @JsonProperty mappings work correctly
         OpenBankTransaction openBankTransaction = new ObjectMapper().readValue(inputJson, OpenBankTransaction.class);
         Transaction actualTransaction = openBankTransactionTransformer.apply(openBankTransaction);
         assertEquals(expectedTransaction, actualTransaction);

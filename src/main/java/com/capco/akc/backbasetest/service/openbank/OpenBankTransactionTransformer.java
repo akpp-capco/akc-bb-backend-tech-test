@@ -1,4 +1,4 @@
-package com.capco.akc.backbasetest.service;
+package com.capco.akc.backbasetest.service.openbank;
 
 import com.capco.akc.backbasetest.model.Transaction;
 import com.capco.akc.backbasetest.model.openbank.OpenBankTransaction;

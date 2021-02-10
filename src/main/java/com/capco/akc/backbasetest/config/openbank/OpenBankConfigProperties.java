@@ -1,4 +1,4 @@
-package com.capco.akc.backbasetest.config;
+package com.capco.akc.backbasetest.config.openbank;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,9 +1,10 @@
-package com.capco.akc.backbasetest.service;
+package com.capco.akc.backbasetest.service.openbank;
 
-import com.capco.akc.backbasetest.config.OpenBankConfigProperties;
+import com.capco.akc.backbasetest.config.openbank.OpenBankConfigProperties;
 import com.capco.akc.backbasetest.model.Transaction;
 import com.capco.akc.backbasetest.model.openbank.OpenBankTransaction;
 import com.capco.akc.backbasetest.model.openbank.OpenBankTransactionList;
+import com.capco.akc.backbasetest.service.TransactionsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -64,7 +65,9 @@ public class OpenBankTransactionsService implements TransactionsService {
 
     private OpenBankTransactionList getOpenBankTransactionList() {
         Map<String, String> uriParams = new HashMap<>();
-        // TODO: parametrize
+        // URI parameters are hardcoded here because this is the only publicly available OpenBank endpoint/data that I am aware of, and should be enough for proof of concept.
+        // Regardless of who is logged in to this app, the same transaction info will be retrieved.
+        // Ideally, this would be parametrized based on the user's identity and further request parameters (i.e. for the account Id).
         uriParams.put(BANK_ID_PARAM, "rbs");
         uriParams.put(ACCOUNT_ID_PARAM, "savings-kids-john");
         uriParams.put(VIEW_ID_PARAM, "public");
