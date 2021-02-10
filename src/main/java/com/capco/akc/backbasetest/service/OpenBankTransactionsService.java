@@ -26,8 +26,9 @@ public class OpenBankTransactionsService implements TransactionsService {
     private final String openBankUrl;
 
     @Autowired
-    public OpenBankTransactionsService(OpenBankConfigProperties openBankConfigProperties) {
-        this.restTemplate = new RestTemplate();
+    public OpenBankTransactionsService(RestTemplate restTemplate,
+                                       OpenBankConfigProperties openBankConfigProperties) {
+        this.restTemplate = restTemplate;
         this.openBankUrl = openBankConfigProperties.getOpenBankUrl();
     }
 
